@@ -11,16 +11,90 @@ var HelloWorld = React.createClass({displayName: "HelloWorld",
 });
 
 module.exports = HelloWorld;
-},{"react":3}],2:[function(require,module,exports){
+},{"react":5}],2:[function(require,module,exports){
+/** @jsx React.DOM */
+var React = require("react");
+var MeniItem = require("./menuitem.jsx");
+
+var MenuExample = React.createClass({displayName: "MenuExample",
+
+    getInitialState: function(){
+        return { focused: 0 };
+    },
+
+    clicked: function(index){
+
+        // Обработчик клика обновит состояние
+        // изменив индекс на сфокусированный элемент меню
+        this.setState({focused: index});
+    },
+
+    render: function() {
+        console.debug("render");
+        var self = this;
+        return (
+            React.createElement("div", null, 
+                React.createElement("ul", null,  this.props.items.map(function(m, index){
+
+                    var style = '';
+
+                    if(self.state.focused == index){
+                        style = 'focused';
+                    }
+
+                    // Обратите внимание на использование метода bind(). Он делает
+                    // index доступным в функции clicked:
+
+                    //return <li className={style} onClick={self.clicked.bind(self, index)}>{m}</li>;
+                    return React.createElement(MeniItem, {title: m});
+
+                }) 
+
+                ), 
+
+                React.createElement("p", null, "Selected: ", this.props.items[this.state.focused])
+            )
+        );
+    }
+});
+
+module.exports = MenuExample;
+},{"./menuitem.jsx":3,"react":5}],3:[function(require,module,exports){
+var React = require("react");
+
+var MenuItem = React.createClass({displayName: "MenuItem",
+    getInitialState: function(){
+        return { selected: false };
+    },
+
+    render: function(){
+        console.debug(this.props.title + " render");
+
+        var self = this;
+        var item = this.state.selected
+            ? (React.createElement("li", {onClick: this.props.onClick}, React.createElement("strong", null, self.props.title)))
+            : (React.createElement("li", {onClick: this.props.onClick}, self.props.title));
+
+        return item;
+    },
+});
+
+module.exports = MenuItem;
+},{"react":5}],4:[function(require,module,exports){
 var HelloWorld = require("./components/helloworld.jsx");
 var React = require("react");
 window.React = React;
 
-window.addEventListener("load", function(){
-    React.render(React.createElement(HelloWorld, null), document.body);
-}, false);
+var MenuExample = require("./components/menu.jsx");
 
-},{"./components/helloworld.jsx":1,"react":3}],3:[function(require,module,exports){
+window.addEventListener("load", function(){
+    React.render(React.createElement(HelloWorld, null), document.getElementById("Hello"));
+    React.render(
+        React.createElement(MenuExample, {items:  ['Home', 'Services', 'About', 'Contact us'] }),
+        document.getElementById("Menu")
+    );
+}, false);
+},{"./components/helloworld.jsx":1,"./components/menu.jsx":2,"react":5}],5:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /**
@@ -19631,4 +19705,4 @@ module.exports = warning;
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[2]);
+},{}]},{},[4]);

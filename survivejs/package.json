@@ -4,8 +4,8 @@
   "description": "examples from survivejs(webpack and react) book",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server --config webpack.development.js --devtool eval --progress --colors --hot --inline --history-api-fallback --content-base build"
+    "build": "SET TARGET=build&& webpack",
+    "start": "SET TARGET=dev&& webpack-dev-server --progress --colors --hot --inline --history-api-fallback"
   },
   "author": "",
   "license": "ISC",
@@ -13,5 +13,11 @@
     "node-libs-browser": "^0.5.2",
     "webpack": "^1.10.5",
     "webpack-dev-server": "^1.10.1"
+  },
+  "devDependencies": {
+    "css-loader": "^0.15.6",
+    "html-webpack-plugin": "^1.6.0",
+    "style-loader": "^0.12.3",
+    "webpack-merge": "^0.1.2"
   }
 }
